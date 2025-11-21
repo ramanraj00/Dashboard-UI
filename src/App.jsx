@@ -28,10 +28,20 @@ const App = () => {
       const degree = Math.floor(Math.random() * 360)
       const degreeString = `${degree}deg`
 
-      colors.push({
-        gradient:`linear-Gradient(${degreeString},${color1},${color2})`,
-        css:`background: 'linear-gradient(${degreeString},${color1},${color2})'`,
-      })
+      if (type === "Linear")
+      {
+        colors.push({
+          gradient:`linear-gradient(${degreeString},${color1},${color2})`,
+          css:`background: 'linear-gradient(${degreeString},${color1},${color2})';`,
+        })
+      }
+      else {
+        colors.push({
+          gradient:`radial-gradient(circle,${color1},${color2})`,
+          css:`background: 'radial-gradient(circle,${color1},${color2})';`,
+        })
+      }
+
 
     }
 
@@ -41,16 +51,16 @@ const App = () => {
 
   const onCopy = (css) => {
     navigator.clipboard.writeText(css)
-    toast.success("Gradient Code Copied !")
+    toast.success("Gradient Code Copied ! ", {position:'bottom-left'})
   }
 
   useEffect(()=>{
     genrateGradient()
-  },[value])
+  },[value , type])
   
   return (
 
-<div className="min-h-screen w-full bg-white relative text-gray-800">
+<div className="min-h-screen w-full bg-white relative text-gray-800 py-12">
   {/* Circuit Board - Light Pattern */}
   <div
     className="absolute inset-0 z-0 pointer-events-none"
@@ -64,8 +74,7 @@ const App = () => {
       backgroundSize: '40px 40px, 40px 40px, 40px 40px, 40px 40px',
     }}
   />
-   <div className="min-h-screen bg-[#EAEFF7] py-12  ">
-
+  
       <div className="w-9/12 mx-auto space-y-12">
 
       <div className="flex justify-between">
@@ -87,6 +96,8 @@ const App = () => {
             <option >Linear</option>
             <option>Radial</option>
           </select>
+
+          <button onClick={genrateGradient} className="border-2 border-black  rounded-lg  w-[100px] text-white font-bold focus:outline-0  h-10 pl-3 bg-black text-xl ">Genrate</button>
       </div>
 
       </div>
@@ -95,14 +106,14 @@ const App = () => {
 
       {gradient.map((item, index)=>(
         <div key={index} className="h-[180px] bg-red-500 rounded-2xl   border-2 relative " style={{background:item.gradient}}>
-        <button onClick={()=>onCopy(item.css)} className="absolute bottom-3 right-2 text-white bg-black/50 hover:bg-black rounded-md p-1 border border-white">Copy</button>
+        <button onClick={()=>onCopy(item.css)} className="absolute bottom-3 right-2 text-white bg-black/50 hover:bg-black rounded-md p-1 border border-white ">Copy</button>
       </div>
       ))}
 
     </div>
 
     </div>
-    </div>
+   
 
     <ToastContainer/>
      
